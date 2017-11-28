@@ -10,8 +10,10 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="en">titulkomet.cz</summary>
     <summary lang="cs">titulkomet.cz</summary>
+    <summary lang="sk">titulkomet.cz</summary>
     <description lang="en">Watch content from titulkomet.cz</description>
     <description lang="cs">Videa s českými titulky. Vtipná, šokující, virální, smutná, pěkná prostě všelijaká, ale jedno mají společné - budete jim rozumět.</description>
+    <description lang="sk">Videá s českými titulkami. Vtipné, šokujúce, virálne, smutné, pekné, jednoducho všelijaké, ale jedno majú spoločné - budete im rozumieť.</description>
     <platform>all</platform>
   </extension>
 </addon>

@@ -82,15 +82,7 @@ def vp8_youtube_filter(stream):
 
 class TitulkometXBMCContentProvider(xbmcprovider.XBMCMultiResolverContentProvider):
     def play(self, item):
-        stream = self.resolve(item['url'])
-        if type(stream) == type([]):
-            # resolved to mutliple files, we'll feed playlist and play the first one
-            playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-            playlist.clear()
-            for video in stream:
-                li = xbmcgui.ListItem(label=video['title'], path=video['url'], iconImage='DefaultVideo.png')
-                playlist.add(video['url'], li)
-            stream = stream[0]
+        stream = self.resolve(item['url'])[0]
         if stream:
             xbmcutil.reportUsage(self.addon_id, self.addon_id + '/play')
             if 'headers' in stream.keys():

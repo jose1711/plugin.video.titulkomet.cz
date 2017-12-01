@@ -43,41 +43,40 @@ settings = {'downloads': __addon__.getSetting('downloads'), 'quality': __addon__
 
 
 def vp8_youtube_filter(stream):
-	# some embedded devices running xbmc doesnt have vp8 support, so we
-	# provide filtering ability for youtube videos
-	
-	#======================================================================
-	# 	  5: "240p h263 flv container",
-	#      18: "360p h264 mp4 container | 270 for rtmpe?",
-	#      22: "720p h264 mp4 container",
-	#      26: "???",
-	#      33: "???",
-	#      34: "360p h264 flv container",
-	#      35: "480p h264 flv container",
-	#      37: "1080p h264 mp4 container",
-	#      38: "720p vp8 webm container",
-	#      43: "360p h264 flv container",
-	#      44: "480p vp8 webm container",
-	#      45: "720p vp8 webm container",
-	#      46: "520p vp8 webm stereo",
-	#      59: "480 for rtmpe",
-	#      78: "seems to be around 400 for rtmpe",
-	#      82: "360p h264 stereo",
-	#      83: "240p h264 stereo",
-	#      84: "720p h264 stereo",
-	#      85: "520p h264 stereo",
-	#      100: "360p vp8 webm stereo",
-	#      101: "480p vp8 webm stereo",
-	#      102: "720p vp8 webm stereo",
-	#      120: "hd720",
-	#      121: "hd1080"
-	#======================================================================
-	try:
-		if stream['fmt'] in [38, 44, 45, 46, 100, 101, 102]:
-			return True
-	except KeyError:
-		return False
-	return False
+    # some embedded devices running xbmc doesnt have vp8 support, so we
+    # provide filtering ability for youtube videos
+    # ======================================================================
+    #     5: "240p h263 flv container",
+    #      18: "360p h264 mp4 container | 270 for rtmpe?",
+    #      22: "720p h264 mp4 container",
+    #      26: "???",
+    #      33: "???",
+    #      34: "360p h264 flv container",
+    #      35: "480p h264 flv container",
+    #      37: "1080p h264 mp4 container",
+    #      38: "720p vp8 webm container",
+    #      43: "360p h264 flv container",
+    #      44: "480p vp8 webm container",
+    #      45: "720p vp8 webm container",
+    #      46: "520p vp8 webm stereo",
+    #      59: "480 for rtmpe",
+    #      78: "seems to be around 400 for rtmpe",
+    #      82: "360p h264 stereo",
+    #      83: "240p h264 stereo",
+    #      84: "720p h264 stereo",
+    #      85: "520p h264 stereo",
+    #      100: "360p vp8 webm stereo",
+    #      101: "480p vp8 webm stereo",
+    #      102: "720p vp8 webm stereo",
+    #      120: "hd720",
+    #      121: "hd1080"
+    # ======================================================================
+    try:
+        if stream['fmt'] in [38, 44, 45, 46, 100, 101, 102]:
+            return True
+    except KeyError:
+        return False
+    return False
 
 
 class TitulkometXBMCContentProvider(xbmcprovider.XBMCMultiResolverContentProvider):
@@ -90,35 +89,35 @@ class TitulkometXBMCContentProvider(xbmcprovider.XBMCMultiResolverContentProvide
                     stream['url'] += '|%s=%s' % (header, stream['headers'][header])
             print 'Sending %s to player' % stream['url']
             li = xbmcgui.ListItem(path=stream['url'], iconImage='DefaulVideo.png')
-            
+
             sub = False
             if xbmcaddon.Addon('xbmc.addon').getAddonInfo('version') > "16":
                 sub = True
-                if stream['subs'] != None and stream['subs'] != '':
+                if stream['subs'] is None and stream['subs'] != '':
                     li.setSubtitles([stream['subs']])
-                
+
             xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, li)
-            if sub == False:
+            if not sub:
                 xbmcutil.load_subtitles(stream['subs'])
 
     def resolve(self, url):
         item = self.provider.video_item()
-        item.update({'url':url})
+        item.update({'url': url})
 
         host = 'titulkomet.cz'
         tc = 'UA-110229735-1'
         try:
-           utmain.main({'id':__scriptid__,'host':host,'tc':tc,'action':url})
+            utmain.main({'id': __scriptid__, 'host': host, 'tc': tc, 'action': url})
         except:
-           pass
+            pass
 
         try:
             return self.provider.resolve(item)
         except ResolveException, e:
             self._handle_exc(e)
 
+
 params = util.params()
 if params == {}:
-	xbmcutil.init_usage_reporting(__scriptid__)
+    xbmcutil.init_usage_reporting(__scriptid__)
 TitulkometXBMCContentProvider(titulkomet.TitulkometContentProvider(tmp_dir=xbmc.translatePath(__addon__.getAddonInfo('profile'))), settings, __addon__).run(params)
-

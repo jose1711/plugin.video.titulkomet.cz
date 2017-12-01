@@ -121,10 +121,10 @@ class TitulkometContentProvider(ContentProvider):
         return result
 
     def format_title(self, m):
-    	return "{0} - {1}%".format(m.group('title'), int(float(m.group('rating').replace(",", ".")) / 5 * 100))
+        return "{0} - {1}%".format(m.group('title'), int(float(m.group('rating').replace(",", ".")) / 5 * 100))
 
     def decode_plot(self, m):
-    	p = m.group('plot')
+        p = m.group('plot')
         p = re.sub('<br[^>]*>', '', p)
         p = re.sub('<div[^>]+>', '', p)
         p = re.sub('<table.*', '', p)
@@ -166,21 +166,19 @@ class TitulkometContentProvider(ContentProvider):
             raise ResolveException('Video nenalezeno')
 
         for i in resolved:
-           item = self.video_item()
-           try:
-               item['title'] = i['title']
-           except KeyError:
-               pass
-           item['url'] = i['url']
-           item['quality'] = i['quality']
-           item['surl'] = i['surl']
-           item['subs'] = i['subs']
-           item['headers'] = i['headers']
-           try:
-               item['fmt'] = i['fmt']
-           except KeyError:
-               pass
-           result.append(item)
-            
+            item = self.video_item()
+            try:
+                item['title'] = i['title']
+            except KeyError:
+                pass
+            item['url'] = i['url']
+            item['quality'] = i['quality']
+            item['surl'] = i['surl']
+            item['subs'] = i['subs']
+            item['headers'] = i['headers']
+            try:
+                item['fmt'] = i['fmt']
+            except KeyError:
+                pass
+            result.append(item)
         return result
-

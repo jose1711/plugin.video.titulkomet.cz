@@ -153,7 +153,7 @@ class TitulkometContentProvider(ContentProvider):
         print 'data end ----'
 
         urls = re.findall('file:[ ]+\"(?P<url>[^\"].+?)\"', data, re.IGNORECASE | re.DOTALL | re.MULTILINE)
-        video_url = resolver.findstreams([urls[0].replace('https://youtu.be/', 'https://www.youtube.com/watch?v=')])
+        video_url = resolver.findstreams([re.sub('http[s]?://youtu.be/', 'https://www.youtube.com/watch?v=', urls[0])])
         print video_url
         subs = urls[1]
 
